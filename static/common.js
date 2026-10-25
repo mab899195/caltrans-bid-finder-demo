@@ -56,3 +56,21 @@ function initDistrictPicker(names, onChange) {
     if (!$("district-picker").contains(e.target)) $("district-picker").open = false;
   });
 }
+
+// --- links to Caltrans project pages ------------------------------------------
+// Caltrans project URLs contain "ad_id=". Some ad blockers' popup filters treat
+// that as an ad and close the new tab within a second. Open a new tab as usual,
+// and if it gets closed right away, open the page in this tab instead.
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[target="_blank"][href*="ad_id="]');
+  if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  const w = window.open(a.href, "_blank");
+  if (!w) { location.href = a.href; return; }
+  try { w.opener = null; } catch { /* already cross-origin */ }
+  const started = Date.now();
+  const timer = setInterval(() => {
+    if (w.closed) { clearInterval(timer); location.href = a.href; }
+    else if (Date.now() - started > 2500) clearInterval(timer);
+  }, 200);
+});
