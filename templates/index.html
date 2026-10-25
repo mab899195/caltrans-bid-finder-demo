@@ -1,26 +1,16 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Caltrans Bid Finder</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% include "_head.html" %}
 </head>
 <body>
-<header class="top">
-  <div>
-    <h1>Caltrans Bid Finder</h1>
-    <nav class="tabs">
-      <a href="/" aria-current="page">Projects</a>
-      <a href="/results">Bid results</a>
-      <a href="/alerts">Email alerts <span id="alert-count" class="count"></span></a>
-    </nav>
-  </div>
-  <div class="refresh">
-    <span id="last-scrape" class="muted">Loading…</span>
-    <button id="refresh-btn" type="button">Refresh now</button>
-  </div>
-</header>
+{% set active = "projects" %}{% include "_appbar.html" %}
+<main>
+<div class="page-head">
+  <span class="kicker">Districts, estimate and electrical work</span>
+  <h1>Projects</h1>
+</div>
 <div id="run-alert" class="alert" hidden></div>
 
 <section class="filters" aria-label="Filters">
@@ -91,6 +81,8 @@
 </table>
 </div>
 <p id="empty" class="muted" hidden>No projects match these filters.</p>
+
+</main>
 
 <script>window.DEFAULTS = {{ defaults|tojson }};</script>
 <script src="{{ url_for('static', filename='common.js') }}"></script>

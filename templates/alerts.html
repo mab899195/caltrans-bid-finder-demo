@@ -1,22 +1,16 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Email Alerts · Caltrans Bid Finder</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% include "_head.html" %}
 </head>
 <body>
-<header class="top">
-  <div>
-    <h1>Caltrans Bid Finder</h1>
-    <nav class="tabs">
-      <a href="/">Projects</a>
-      <a href="/results">Bid results</a>
-      <a href="/alerts" aria-current="page">Email alerts <span id="alert-count" class="count"></span></a>
-    </nav>
-  </div>
-</header>
+{% set active = "alerts" %}{% include "_appbar.html" %}
+<main>
+<div class="page-head">
+  <span class="kicker">One email per new matching project</span>
+  <h1>Email alerts</h1>
+</div>
 
 {% if mode == "demo" %}
 <div class="alert">
@@ -39,6 +33,8 @@
     </p>
   </section>
 </div>
+
+</main>
 
 <script>
 const $ = (id) => document.getElementById(id);

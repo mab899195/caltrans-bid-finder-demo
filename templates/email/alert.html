@@ -6,88 +6,89 @@
 <title>{{ subject }}</title>
 <base target="_blank">
 </head>
-<body style="margin:0;padding:0;background:#f3f5f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#1c2330;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f5f8;padding:24px 12px;">
+<body style="margin:0;padding:0;background:#f2f2f3;font-family:Barlow,'Helvetica Neue',Arial,sans-serif;color:#1d1f20;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2f2f3;padding:24px 12px;">
 <tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #dde2e8;border-radius:8px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #d4d4d7;">
 
+  <tr><td style="background:#2c455d;color:#ffffff;padding:12px 24px;font-family:'Barlow Condensed','Arial Narrow',Arial,sans-serif;font-size:17px;font-weight:600;">Caltrans Bid Finder</td></tr>
   <tr><td style="padding:20px 24px 4px;">
     {% if p.stage == "upcoming" %}
-    <div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#6d28d9;text-transform:uppercase;">Coming soon · advertises {{ p.advertised }}</div>
+    <div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#2c455d;text-transform:uppercase;">Coming soon · advertises {{ p.advertised }}</div>
     {% else %}
-    <div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#c2410c;text-transform:uppercase;">New Caltrans project</div>
+    <div style="font-size:12px;font-weight:700;letter-spacing:.06em;color:#9b1f1d;text-transform:uppercase;">New Caltrans project</div>
     {% endif %}
-    <div style="font-size:20px;font-weight:700;margin-top:6px;line-height:1.3;">{{ p.contract }} – {{ p.description }}</div>
-    <div style="font-size:14px;color:#5f6b7a;margin-top:6px;">{{ p.location }}</div>
+    <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,sans-serif;font-size:24px;font-weight:600;margin-top:6px;line-height:1.15;">{{ p.contract }} – {{ p.description }}</div>
+    <div style="font-size:14px;color:#5d5d60;margin-top:6px;">{{ p.location }}</div>
   </td></tr>
 
   <tr><td style="padding:16px 24px 4px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;border-collapse:collapse;">
       <tr>
-        <td style="padding:8px 0;color:#5f6b7a;width:44%;border-bottom:1px solid #eef1f4;">Estimate</td>
-        <td style="padding:8px 0;font-weight:700;border-bottom:1px solid #eef1f4;">{{ estimate }}</td>
+        <td style="padding:8px 0;color:#5d5d60;width:44%;border-bottom:1px solid #e7e7ea;">Estimate</td>
+        <td style="padding:8px 0;font-weight:700;border-bottom:1px solid #e7e7ea;">{{ estimate }}</td>
       </tr>
       <tr>
-        <td style="padding:8px 0;color:#5f6b7a;border-bottom:1px solid #eef1f4;">Bid open</td>
-        <td style="padding:8px 0;border-bottom:1px solid #eef1f4;">
+        <td style="padding:8px 0;color:#5d5d60;border-bottom:1px solid #e7e7ea;">Bid open</td>
+        <td style="padding:8px 0;border-bottom:1px solid #e7e7ea;">
           <strong>{{ p.bid_open or "not listed" }}</strong>
-          {% if days_left is not none %}<span style="color:{{ '#b91c1c' if days_left <= 7 else '#5f6b7a' }};"> · {{ days_left }} day{{ '' if days_left == 1 else 's' }} left</span>{% endif %}
-          {% if p.postponed %}<span style="color:#5f6b7a;"> · postponed</span>{% endif %}
+          {% if days_left is not none %}<span style="color:{{ '#b32322' if days_left <= 7 else '#5d5d60' }};"> · {{ days_left }} day{{ '' if days_left == 1 else 's' }} left</span>{% endif %}
+          {% if p.postponed %}<span style="color:#5d5d60;"> · postponed</span>{% endif %}
         </td>
       </tr>
       <tr>
-        <td style="padding:8px 0;color:#5f6b7a;border-bottom:1px solid #eef1f4;">District / county / route</td>
-        <td style="padding:8px 0;border-bottom:1px solid #eef1f4;">{{ p.district }} {{ district_name }} · {{ p.county_route_pm }}</td>
+        <td style="padding:8px 0;color:#5d5d60;border-bottom:1px solid #e7e7ea;">District / county / route</td>
+        <td style="padding:8px 0;border-bottom:1px solid #e7e7ea;">{{ p.district }} {{ district_name }} · {{ p.county_route_pm }}</td>
       </tr>
       <tr>
-        <td style="padding:8px 0;color:#5f6b7a;border-bottom:1px solid #eef1f4;">Mandatory pre-bid meeting</td>
-        <td style="padding:8px 0;border-bottom:1px solid #eef1f4;">{% if p.mandatory_prebid %}<strong style="color:#b91c1c;">Yes</strong>{% else %}No{% endif %}</td>
+        <td style="padding:8px 0;color:#5d5d60;border-bottom:1px solid #e7e7ea;">Mandatory pre-bid meeting</td>
+        <td style="padding:8px 0;border-bottom:1px solid #e7e7ea;">{% if p.mandatory_prebid %}<strong style="color:#b32322;">Yes</strong>{% else %}No{% endif %}</td>
       </tr>
       <tr>
-        <td style="padding:8px 0;color:#5f6b7a;border-bottom:1px solid #eef1f4;">{{ "Advertises" if p.stage == "upcoming" else "Date advertised" }}</td>
-        <td style="padding:8px 0;border-bottom:1px solid #eef1f4;">{{ p.advertised }}{% if p.stage == "upcoming" %} <span style="color:#5f6b7a;">(scheduled; plans not out yet)</span>{% endif %}</td>
+        <td style="padding:8px 0;color:#5d5d60;border-bottom:1px solid #e7e7ea;">{{ "Advertises" if p.stage == "upcoming" else "Date advertised" }}</td>
+        <td style="padding:8px 0;border-bottom:1px solid #e7e7ea;">{{ p.advertised }}{% if p.stage == "upcoming" %} <span style="color:#5d5d60;">(scheduled; plans not out yet)</span>{% endif %}</td>
       </tr>
       <tr>
-        <td style="padding:8px 0;color:#5f6b7a;">Licenses · working days</td>
+        <td style="padding:8px 0;color:#5d5d60;">Licenses · working days</td>
         <td style="padding:8px 0;">{{ p.licenses or "Class A or B" }} · {{ p.working_days }} working days</td>
       </tr>
     </table>
   </td></tr>
 
   <tr><td style="padding:16px 24px 4px;">
-    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#5f6b7a;margin-bottom:8px;">Electrical work found</div>
+    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#5d5d60;margin-bottom:8px;">Electrical work found</div>
     {% if major_items %}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;border-collapse:collapse;">
       {% for i in major_items %}
         <tr>
-          <td style="padding:6px 8px;background:#fff4d6;color:#7a5300;font-family:Menlo,Consolas,monospace;font-size:12px;border-bottom:2px solid #ffffff;width:64px;">{{ i.code }}</td>
-          <td style="padding:6px 10px;border-bottom:1px solid #eef1f4;">{{ i.description }}</td>
-          <td style="padding:6px 0;color:#5f6b7a;border-bottom:1px solid #eef1f4;text-align:right;white-space:nowrap;">{{ i.quantity }} {{ i.unit }}</td>
+          <td style="padding:6px 8px;background:#fae6bb;color:#6b3a00;font-family:Menlo,Consolas,monospace;font-size:12px;border-bottom:2px solid #ffffff;width:64px;">{{ i.code }}</td>
+          <td style="padding:6px 10px;border-bottom:1px solid #e7e7ea;">{{ i.description }}</td>
+          <td style="padding:6px 0;color:#5d5d60;border-bottom:1px solid #e7e7ea;text-align:right;white-space:nowrap;">{{ i.quantity }} {{ i.unit }}</td>
         </tr>
       {% endfor %}
       </table>
     {% else %}
-      <div style="font-size:14px;color:#5f6b7a;">No electrical bid items. Matched on the description.</div>
+      <div style="font-size:14px;color:#5d5d60;">No electrical bid items. Matched on the description.</div>
     {% endif %}
     {% if p.keyword_hits %}
-      <div style="font-size:13px;color:#5f6b7a;margin-top:8px;">Description mentions: {{ p.keyword_hits | join(", ") }}</div>
+      <div style="font-size:13px;color:#5d5d60;margin-top:8px;">Description mentions: {{ p.keyword_hits | join(", ") }}</div>
     {% endif %}
     {% if minor_items %}
-      <div style="font-size:13px;color:#5f6b7a;margin-top:4px;">Also: {% for i in minor_items %}{{ i.code }} {{ i.description | lower }}{% if not loop.last %}; {% endif %}{% endfor %}</div>
+      <div style="font-size:13px;color:#5d5d60;margin-top:4px;">Also: {% for i in minor_items %}{{ i.code }} {{ i.description | lower }}{% if not loop.last %}; {% endif %}{% endfor %}</div>
     {% endif %}
   </td></tr>
 
   <tr><td style="padding:20px 24px 8px;">
-    <a href="{{ links.listing }}" style="display:inline-block;background:#0b5cad;color:#ffffff;text-decoration:none;font-weight:600;font-size:14px;padding:10px 18px;border-radius:6px;">View project on Caltrans</a>
+    <a href="{{ links.listing }}" style="display:inline-block;background:#416180;color:#ffffff;text-decoration:none;font-weight:600;font-size:15px;padding:11px 18px;">View project on Caltrans</a>
   </td></tr>
   <tr><td style="padding:4px 24px 20px;font-size:14px;line-height:1.9;">
-    <a href="{{ links.bid_items }}" style="color:#0b5cad;">List of Bid Items</a> &nbsp;·&nbsp;
-    <a href="{{ links.planholders }}" style="color:#0b5cad;">Planholders</a> &nbsp;·&nbsp;
-    <a href="{{ links.opt_in }}" style="color:#0b5cad;">Opt-in page</a> &nbsp;·&nbsp;
-    <a href="{{ app_url }}" style="color:#0b5cad;">Project list</a>
+    <a href="{{ links.bid_items }}" style="color:#416180;">List of Bid Items</a> &nbsp;·&nbsp;
+    <a href="{{ links.planholders }}" style="color:#416180;">Planholders</a> &nbsp;·&nbsp;
+    <a href="{{ links.opt_in }}" style="color:#416180;">Opt-in page</a> &nbsp;·&nbsp;
+    <a href="{{ app_url }}" style="color:#416180;">Project list</a>
   </td></tr>
 
-  <tr><td style="padding:14px 24px;border-top:1px solid #eef1f4;font-size:12px;color:#8a94a3;">
+  <tr><td style="padding:14px 24px;border-top:1px solid #e7e7ea;font-size:12px;color:#5d5d60;">
     Sent by Caltrans Bid Finder because this project matches your alert filter. Data from Caltrans Contractors Corner. Check the official listing before bidding.
   </td></tr>
 </table>

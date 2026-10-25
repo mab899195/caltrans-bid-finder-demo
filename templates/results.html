@@ -1,22 +1,16 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bid Results · Caltrans Bid Finder</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% include "_head.html" %}
 </head>
 <body>
-<header class="top">
-  <div>
-    <h1>Caltrans Bid Finder</h1>
-    <nav class="tabs">
-      <a href="/">Projects</a>
-      <a href="/results" aria-current="page">Bid results</a>
-      <a href="/alerts">Email alerts</a>
-    </nav>
-  </div>
-</header>
+{% set active = "results" %}{% include "_appbar.html" %}
+<main>
+<div class="page-head">
+  <span class="kicker">Opened bids and who won them</span>
+  <h1>Bid results</h1>
+</div>
 
 <p class="muted intro">
   Results of recently opened Caltrans bids, from the official Bid Summaries: every bidder and
@@ -91,6 +85,8 @@
 <p id="unreadable" class="muted fine" hidden></p>
 <p class="muted fine">History starts with the bid openings Caltrans listed when the tool was set up (about six weeks) and grows with each daily run.
 Amounts are from the Caltrans Bid Summaries; contracts are awarded later. Electrical subcontractors are read from each bidder's subcontractor list and may be incomplete.</p>
+
+</main>
 
 <script>window.DEFAULTS = {{ defaults|tojson }};</script>
 <script src="{{ url_for('static', filename='common.js') }}"></script>

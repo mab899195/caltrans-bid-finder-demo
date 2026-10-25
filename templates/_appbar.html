@@ -1,0 +1,19 @@
+<header class="appbar">
+  <a class="brand" href="/">
+    <span class="brand-mark" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h5"/><path d="M14 3v5h5"/><path d="M19 8v3"/><circle cx="16.5" cy="16.5" r="3.5"/><path d="m19 19 2.5 2.5"/></svg>
+    </span>
+    <span class="brand-name">Caltrans Bid Finder</span>
+  </a>
+  <nav class="tabs" aria-label="Sections">
+    <a href="/"{% if active == "projects" %} aria-current="page"{% endif %}>Projects</a>
+    <a href="/results"{% if active == "results" %} aria-current="page"{% endif %}>Bid results</a>
+    <a href="/alerts"{% if active == "alerts" %} aria-current="page"{% endif %}>Email alerts <span id="alert-count" class="count"></span></a>
+  </nav>
+  {% if active == "projects" %}
+  <div class="refresh">
+    <span id="last-scrape" class="muted">Loading…</span>
+    <button id="refresh-btn" type="button">Refresh now</button>
+  </div>
+  {% endif %}
+</header>
