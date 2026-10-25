@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Alerts · Caltrans Bid Finder</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Caltrans Bid Finder</h1>
+    <nav class="tabs">
+      <a href="/">Projects</a>
+      <a href="/results">Bid results</a>
+      <a href="/alerts" aria-current="page">Email alerts <span id="alert-count" class="count"></span></a>
+    </nav>
+  </div>
+</header>
+
+{% if mode == "demo" %}
+<div class="alert">
+  <strong>Demo mode:</strong> these are the emails the tool would send, one per new matching project.
+  They are saved here and not sent anywhere. Change which projects trigger an email with
+  <em>Use current filters for alerts</em> on the Projects page.
+</div>
+{% endif %}
+
+<div class="inbox">
+  <ul id="alert-list" class="inbox-list" aria-label="Alert emails"></ul>
+  <section class="inbox-view">
+    <div id="email-head" class="email-head" hidden>
+      <div class="email-subject" id="email-subject"></div>
+      <div class="muted"><span id="email-from">From: Caltrans Bid Finder</span> · To: <span id="email-to"></span> · <span id="email-date"></span></div>
+    </div>
+    <iframe id="email-frame" title="Email preview" sandbox="allow-popups allow-popups-to-escape-sandbox"></iframe>
+    <p id="inbox-empty" class="muted" hidden>
+      No alert emails yet. An email is created when a new project matches the alert filter.
+    </p>
+  </section>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = (iso) => new Date(iso).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
+
+let alerts = [];
+function select(id) {
+  const a = alerts.find((x) => x.id === id);
+  if (!a) return;
+  document.querySelectorAll(".inbox-list button").forEach((b) =>
+    b.setAttribute("aria-current", String(Number(b.dataset.id) === id)));
+  $("email-head").hidden = false;
+  $("email-subject").textContent = a.subject;
+  $("email-to").textContent = a.recipient;
+  $("email-date").textContent = fmt(a.created_at);
+  $("email-frame").src = `/alerts/${a.id}/email`;
+  history.replaceState(null, "", `#${a.id}`);
+}
+
+(async () => {
+  alerts = (await (await fetch("/api/alerts")).json()).alerts;
+  $("alert-count").textContent = alerts.length || "";
+  if (!alerts.length) { $("inbox-empty").hidden = false; $("email-frame").hidden = true; return; }
+  $("alert-list").innerHTML = alerts.map((a) => `<li><button type="button" data-id="${a.id}">
+      <span class="inbox-row-top"><strong>${esc(a.contract)}</strong><span class="muted">${esc(fmt(a.created_at))}</span></span>
+      <span class="inbox-row-subject">${esc(a.subject.replace(/^New Caltrans bid – [^–]+ – /, ""))}</span>
+    </button></li>`).join("");
+  $("alert-list").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-id]");
+    if (b) select(Number(b.dataset.id));
+  });
+  select(Number(location.hash.slice(1)) || alerts[0].id);
+})();
+</script>
+</body>
+</html>

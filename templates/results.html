@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bid Results · Caltrans Bid Finder</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Caltrans Bid Finder</h1>
+    <nav class="tabs">
+      <a href="/">Projects</a>
+      <a href="/results" aria-current="page">Bid results</a>
+      <a href="/alerts">Email alerts</a>
+    </nav>
+  </div>
+</header>
+
+<p class="muted intro">
+  Results of recently opened Caltrans bids, from the official Bid Summaries: every bidder and
+  their total, the engineer's estimate, what the low bidder carried for electrical work, and which
+  electrical subcontractors each bidder listed.
+</p>
+
+<section class="filters" aria-label="Filters">
+  <fieldset>
+    <legend>District</legend>
+    <details class="picker" id="district-picker">
+      <summary id="district-summary">Districts</summary>
+      <div class="picker-menu">
+        <div class="picker-actions">
+          <button type="button" class="link" id="districts-all">Select all</button>
+          <button type="button" class="link" id="districts-none">Clear</button>
+        </div>
+        {% for num, name in defaults.district_names.items() %}
+        <label><input type="checkbox" name="district" value="{{ num }}"> <strong>{{ num }}</strong> {{ name }}</label>
+        {% endfor %}
+      </div>
+    </details>
+  </fieldset>
+  <fieldset>
+    <legend>Show</legend>
+    <label><input type="checkbox" id="electrical-only"> With electrical work only</label>
+  </fieldset>
+  <fieldset class="grow">
+    <legend>Search</legend>
+    <input type="search" id="search" placeholder="Bidder, subcontractor, contract, description…">
+  </fieldset>
+</section>
+
+<h2 class="section-title">Competitors <span class="muted" id="comp-scope"></span></h2>
+<div class="table-wrap">
+<table class="compact">
+  <thead>
+    <tr id="comp-headers">
+      <th data-sort="name"><button type="button">Bidder</button></th>
+      <th data-sort="bids" class="num"><button type="button">Bids</button></th>
+      <th data-sort="wins" class="num"><button type="button">Wins (low bid)</button></th>
+      <th data-sort="top3" class="num"><button type="button">Top 3</button></th>
+      <th data-sort="vsEst" class="num"><button type="button">Avg vs estimate</button></th>
+      <th data-sort="won" class="num"><button type="button">Won ($)</button></th>
+    </tr>
+  </thead>
+  <tbody id="comp-rows"></tbody>
+</table>
+</div>
+<p id="comp-more" class="muted"></p>
+
+<h2 class="section-title">Opened bids <span class="muted" id="summary"></span></h2>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr id="sort-headers">
+      <th data-sort="contract"><button type="button">Contract</button></th>
+      <th data-sort="description"><button type="button">Description</button></th>
+      <th data-sort="bid_open"><button type="button">Bid opened</button></th>
+      <th data-sort="estimate" class="num"><button type="button">Engineer's est.</button></th>
+      <th data-sort="low" class="num"><button type="button">Low bid</button></th>
+      <th data-sort="vs" class="num"><button type="button">vs est.</button></th>
+      <th data-sort="bidders" class="num"><button type="button">Bidders</button></th>
+      <th data-sort="low_bidder"><button type="button">Low bidder</button></th>
+      <th data-sort="electrical" class="num"><button type="button">Electrical (low bid)</button></th>
+    </tr>
+  </thead>
+  <tbody id="rows"></tbody>
+</table>
+</div>
+<p id="empty" class="muted" hidden>No bid results match these filters.</p>
+<p id="unreadable" class="muted fine" hidden></p>
+<p class="muted fine">History starts with the bid openings Caltrans listed when the tool was set up (about six weeks) and grows with each daily run.
+Amounts are from the Caltrans Bid Summaries; contracts are awarded later. Electrical subcontractors are read from each bidder's subcontractor list and may be incomplete.</p>
+
+<script>window.DEFAULTS = {{ defaults|tojson }};</script>
+<script src="{{ url_for('static', filename='common.js') }}"></script>
+<script src="{{ url_for('static', filename='results.js') }}"></script>
+</body>
+</html>

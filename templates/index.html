@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caltrans Bid Finder</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Caltrans Bid Finder</h1>
+    <nav class="tabs">
+      <a href="/" aria-current="page">Projects</a>
+      <a href="/results">Bid results</a>
+      <a href="/alerts">Email alerts <span id="alert-count" class="count"></span></a>
+    </nav>
+  </div>
+  <div class="refresh">
+    <span id="last-scrape" class="muted">Loading…</span>
+    <button id="refresh-btn" type="button">Refresh now</button>
+  </div>
+</header>
+<div id="run-alert" class="alert" hidden></div>
+
+<section class="filters" aria-label="Filters">
+  <fieldset>
+    <legend>District</legend>
+    <details class="picker" id="district-picker">
+      <summary id="district-summary">Districts</summary>
+      <div class="picker-menu">
+        <div class="picker-actions">
+          <button type="button" class="link" id="districts-all">Select all</button>
+          <button type="button" class="link" id="districts-none">Clear</button>
+        </div>
+        {% for num, name in defaults.district_names.items() %}
+        <label><input type="checkbox" name="district" value="{{ num }}"> <strong>{{ num }}</strong> {{ name }}</label>
+        {% endfor %}
+      </div>
+    </details>
+  </fieldset>
+  <fieldset>
+    <legend>Estimate ($)</legend>
+    <input type="text" inputmode="numeric" class="money" id="est-min" aria-label="Minimum estimate" placeholder="No minimum">
+    <span>to</span>
+    <input type="text" inputmode="numeric" class="money" id="est-max" aria-label="Maximum estimate" placeholder="No maximum">
+  </fieldset>
+  <fieldset>
+    <legend>Show</legend>
+    <label><input type="checkbox" id="electrical-only"> Electrical only</label>
+    <label><input type="checkbox" id="hide-past"> Hide past bids</label>
+    <label><input type="checkbox" id="include-upcoming"> Include upcoming</label>
+    <select id="status-filter" aria-label="Status">
+      <option value="">Any status</option>
+      {% for s in statuses %}<option value="{{ s }}">{{ s|capitalize }}</option>{% endfor %}
+    </select>
+  </fieldset>
+  <fieldset class="grow">
+    <legend>Search</legend>
+    <input type="search" id="search" placeholder="Contract, description, location, route…">
+  </fieldset>
+  <button type="button" id="reset" class="link">Reset filters</button>
+</section>
+
+<section class="alert-bar" aria-label="Email alert filter">
+  <span class="alert-bar-label">Email alerts</span>
+  <span id="alert-filter" class="muted">Loading…</span>
+  <button type="button" id="save-alert-filter" class="secondary">Use current filters for alerts</button>
+  <span id="alert-msg" class="muted" role="status"></span>
+</section>
+
+<p id="summary" class="muted"></p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr id="sort-headers">
+      <th data-sort="contract"><button type="button">Contract</button></th>
+      <th data-sort="description"><button type="button">Description</button></th>
+      <th data-sort="route"><button type="button">Dist / County / Route</button></th>
+      <th data-sort="estimate" class="num"><button type="button">Estimate</button></th>
+      <th data-sort="advertised"><button type="button">Advertised</button></th>
+      <th data-sort="bid_open"><button type="button">Bid open</button></th>
+      <th data-sort="days_left" class="num"><button type="button">Days left</button></th>
+      <th data-sort="prebid"><button type="button">Pre-bid</button></th>
+      <th data-sort="electrical"><button type="button">Electrical found</button></th>
+      <th data-sort="status"><button type="button">Status</button></th>
+    </tr>
+  </thead>
+  <tbody id="rows"></tbody>
+</table>
+</div>
+<p id="empty" class="muted" hidden>No projects match these filters.</p>
+
+<script>window.DEFAULTS = {{ defaults|tojson }};</script>
+<script src="{{ url_for('static', filename='common.js') }}"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

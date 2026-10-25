@@ -1,0 +1,20 @@
+{{ "COMING SOON – ADVERTISES " ~ p.advertised if p.stage == "upcoming" else "NEW CALTRANS PROJECT" }}
+{{ p.contract }} – {{ p.description }}
+{{ p.location }}
+
+Estimate:          {{ estimate }}
+Bid open:          {{ p.bid_open or "not listed" }}{% if days_left is not none %} ({{ days_left }} day{{ '' if days_left == 1 else 's' }} left){% endif %}{% if p.postponed %}, postponed{% endif %}
+District/route:    {{ p.district }} {{ district_name }} · {{ p.county_route_pm }}
+Mandatory pre-bid: {{ "YES" if p.mandatory_prebid else "No" }}
+{{ "Advertises:       " if p.stage == "upcoming" else "Advertised:       " }} {{ p.advertised }}
+
+ELECTRICAL WORK FOUND
+{% for i in major_items %}  {{ i.code }}  {{ i.description }} ({{ i.quantity }} {{ i.unit }})
+{% else %}  No electrical bid items. Matched on the description.
+{% endfor %}{% if p.keyword_hits %}Description mentions: {{ p.keyword_hits | join(", ") }}
+{% endif %}
+Project:       {{ links.listing }}
+Bid items:     {{ links.bid_items }}
+Planholders:   {{ links.planholders }}
+Opt-in:        {{ links.opt_in }}
+Project list:  {{ app_url }}
