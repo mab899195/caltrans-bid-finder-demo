@@ -6,3 +6,7 @@ __pycache__/
 .env*
 .vercel/
 PRD.md
+# Agent skills installed by `vercel integration add`
+.agents/
+.claude/
+skills-lock.json
